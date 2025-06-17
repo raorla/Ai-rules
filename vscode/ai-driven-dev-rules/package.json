@@ -1,0 +1,181 @@
+{
+  "name": "ai-driven-dev-rules",
+  "displayName": "AI-Driven Dev Rules",
+  "description": "Browse and download files from GitHub repositories directly within VS Code",
+  "version": "0.0.3",
+  "engines": {
+    "vscode": "^1.92.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ai-driven-dev/rules"
+  },
+  "categories": ["Other"],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "aidd.setRepository",
+        "title": "AI-Driven Dev Rules: Set Repository",
+        "icon": "$(repo)"
+      },
+      {
+        "command": "aidd.refresh",
+        "title": "AI-Driven Dev Rules: Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "aidd.toggleSelection",
+        "title": "AI-Driven Dev Rules: Toggle Selection",
+        "icon": "$(check)"
+      },
+      {
+        "command": "aidd.downloadSelected",
+        "title": "AI-Driven Dev Rules: Download Selected Files",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "aidd.welcome",
+        "title": "AI-Driven Dev Rules: Show Welcome Message"
+      },
+      {
+        "command": "aidd.openSettings",
+        "title": "AI-Driven Dev Rules: Open Settings",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "aidd.clearStorage",
+        "title": "AI-Driven Dev Rules: Clear Storage",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "aidd.refreshRuleStatus",
+        "title": "AI-Driven Dev Rules: Check for Rule Updates",
+        "icon": "$(sync)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ai-driven-dev-rules",
+          "title": "AI-Driven Dev Rules",
+          "icon": "$(github)"
+        }
+      ]
+    },
+    "views": {
+      "ai-driven-dev-rules": [
+        {
+          "id": "aidd.welcomeView",
+          "name": "Get Started",
+          "type": "webview",
+          "visibility": "visible"
+        },
+        {
+          "id": "ai-driven-dev-rules",
+          "name": "Repository Explorer",
+          "icon": "$(github)",
+          "contextualTitle": "AI-Driven Dev Rules"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "aidd.setRepository",
+          "when": "view == ai-driven-dev-rules",
+          "group": "navigation"
+        },
+        {
+          "command": "aidd.refresh",
+          "when": "view == ai-driven-dev-rules",
+          "group": "navigation"
+        },
+        {
+          "command": "aidd.downloadSelected",
+          "when": "view == ai-driven-dev-rules",
+          "group": "navigation"
+        },
+        {
+          "command": "aidd.refreshRuleStatus",
+          "when": "view == ai-driven-dev-rules",
+          "group": "navigation@3"
+        },
+        {
+          "command": "aidd.openSettings",
+          "when": "view == ai-driven-dev-rules",
+          "group": "navigation@5"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "aidd.toggleSelection",
+          "when": "view == ai-driven-dev-rules",
+          "group": "inline"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "AI-Driven Dev Rules",
+      "properties": {
+        "aidd.githubToken": {
+          "type": "string",
+          "default": "",
+          "description": "Token d'accès personnel (PAT) GitHub. Optionnel, mais recommandé pour augmenter les limites de taux de l'API: https://github.com/settings/personal-access-tokens",
+          "scope": "machine-overridable"
+        },
+        "aidd.maxRecentRepositories": {
+          "type": "number",
+          "default": 5,
+          "description": "Nombre maximum de dépôts (autres que le dépôt 'Featured') à mémoriser dans la liste de sélection rapide.",
+          "minimum": 1,
+          "scope": "window"
+        },
+        "aidd.maxConcurrentDownloads": {
+          "type": "number",
+          "default": 3,
+          "description": "Nombre maximum de fichiers à télécharger simultanément.",
+          "minimum": 1,
+          "scope": "window"
+        },
+        "aidd.showWelcomeOnStartup": {
+          "type": "boolean",
+          "default": true,
+          "description": "Afficher la vue 'Get Started' au démarrage de VS Code.",
+          "scope": "window"
+        },
+        "aidd.autoRefreshInterval": {
+          "type": ["number", "null"],
+          "default": null,
+          "description": "Intervalle (en secondes) pour rafraîchir automatiquement l'explorateur de dépôt. Mettre à 'null' pour désactiver.",
+          "minimum": 10,
+          "scope": "window"
+        },
+        "aidd.includePaths": {
+          "type": "string",
+          "default": ".cursor,.clinerules",
+          "description": "Liste de chemins ou noms de fichiers/dossiers à inclure dans l'explorateur, séparés par des virgules. Si vide, tout est inclus. Ex: .cursor,docs/,README.md",
+          "scope": "window"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:package": "npx vsce package",
+    "vscode:prepublish": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.92.0",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "eslint": "^9.23.0",
+    "lefthook": "^1.11.10",
+    "typescript": "^5.8.2"
+  },
+  "packageManager": "pnpm@10.7.1+sha512.2d92c86b7928dc8284f53494fb4201f983da65f0fb4f0d40baafa5cf628fa31dae3e5968f12466f17df7e97310e30f343a648baea1b9b350685dafafffdf5808"
+}
